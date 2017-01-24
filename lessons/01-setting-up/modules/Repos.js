@@ -1,0 +1,43 @@
+import React from 'react'
+import NavLink from './NavLink'
+import { browserHistory } from 'react-router'
+
+export default React.createClass({
+
+
+  // ask for `router` from context
+  contextTypes: {
+    router: React.PropTypes.object
+  },
+
+  handleSubmit(event) {
+    event.preventDefault()
+    const userName = event.target.elements[0].value
+    const repo = event.target.elements[1].value
+    const path = `/repos/${userName}/${repo}`
+    console.log(path)
+    this.context.router.push(path)
+    // If you pass a different history to Router than you use here, it won't work.  -> browserHistory.push(path)
+  },
+
+  render : function () {
+    return   (
+        <div>
+          <h2>Repos</h2>
+          <ul>
+            <li><NavLink to="/repos/reactjs/react-router">React Router</NavLink></li>
+            <li><NavLink to="/repos/facebook/react">React</NavLink></li>
+            {/* add this form */}
+            <li>
+              <form onSubmit={this.handleSubmit}>
+                <input type="text" placeholder="userName"/> / {' '}
+                <input type="text" placeholder="repo"/>{' '}
+                <button type="submit">Go</button>
+              </form>
+            </li>
+          </ul>
+          {this.props.children}
+        </div>
+      )
+  }
+})
